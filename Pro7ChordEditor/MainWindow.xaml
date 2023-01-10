@@ -1,0 +1,16 @@
+﻿<Window x:Class="Pro7ChordEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Pro7ChordEditor"
+        mc:Ignorable="d"
+        Title="Pro7ChordEditor" Height="450" Width="800">
+    <Grid Background="DarkGray">
+        <ScrollViewer Margin="0,0,0,52">
+            <StackPanel Name="stackPanel"></StackPanel>
+        </ScrollViewer>
+        <Button Content="Save" Margin="8,0,0,8" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="74" Click="Button_Click"/>
+
+    </Grid>
+</Window>

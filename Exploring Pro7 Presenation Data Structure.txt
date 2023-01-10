@@ -1,0 +1,13 @@
+Cues[]
+
+Each cue has:
+    Actions[]
+
+
+A Slide is a type of Action (so each cue has at least a slide Action, and then any other actions added to the slide!)
+
+So for each action in the list of actions for a cue, look for Rv.Data.Action.ActionTypeDataCase == Slide
+
+Once you have a Slide Action (action) then it has a list of elements in action.Slide.Presentation.BaseSlide.Elements[] (of type Rv.Data.Slide.Types.Element)
+
+Each Element has a .Element_ property (of type Rv.Data.Graphics.Types.Element)
