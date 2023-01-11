@@ -20,6 +20,8 @@ using static Rv.Data.Action;
 using static Rv.Data.NetworkAPI_v1.Types.API_v1_Presentation_Request.Types;
 using Presentation = Rv.Data.Presentation;
 using static Rv.Data.NetworkAPI_v1.Types.API_v1_Trigger_Request.Types;
+using System.Text.RegularExpressions;
+using System.Reflection;
 
 namespace Pro7ChordEditor
 {
@@ -28,15 +30,58 @@ namespace Pro7ChordEditor
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Pro7Presentation selectedPro7Presentation;
+        private List<Pro7Library> pro7Libraries;
+        private List<Pro7Presentation> pro7Presentations;
+
         Rv.Data.Presentation presentation;
+
+        public List<Pro7Library> Pro7Libraries
+        {
+            get { return pro7Libraries; }
+        }
+
+        public List<Pro7Presentation> Pro7Presentations
+        {
+            get { return pro7Presentations; }
+        }
 
         public MainWindow()
         {
             InitializeComponent();
+            mainWindow.Title = mainWindow.Title + " (" + Assembly.GetExecutingAssembly().GetName().Version + ")";
+            pro7Libraries = new List<Pro7Library>();
+            string pro7SystemFolder;
+            try
+            {
+                using (var sr = new StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\RenewedVision\\ProPresenter\\PathSettings.proPaths"))
+                {
+                    pro7SystemFolder = Regex.Match(sr.ReadToEnd().Replace(@"\\",@"\"), @"(?<=Base=).*(?=;)").Value;
 
-            
-            // TODO: get propresenter preferences to get library directory and show libraries and presentations (perhaps even playlists and presentations)
-            using (var input = File.OpenRead(@"C:\Users\greys\Documents\ProPresenter\Libraries\Default\Alive.pro"))
+                }
+            }
+            catch (IOException e)
+            {
+                MessageBox.Show("Could not read PathSettings.proPaths");
+                return;
+            }
+
+            if (Directory.Exists(pro7SystemFolder))
+            {
+                foreach (string libraryFolder in Directory.EnumerateDirectories(pro7SystemFolder + "Libraries"))
+                {
+                    pro7Libraries.Add(new Pro7Library { Name = System.IO.Path.GetFileName(libraryFolder) , Path = libraryFolder });
+                }
+            }
+
+            this.DataContext = this;
+
+        }
+
+        private void loadPresentation(string presentationPath)
+        {
+            stackPanel.Children.Clear();
+            using (var input = File.OpenRead(presentationPath))
             {
                 presentation = Rv.Data.Presentation.Parser.ParseFrom(input);
                 foreach (Rv.Data.Cue cue in presentation.Cues)
@@ -52,7 +97,7 @@ namespace Pro7ChordEditor
                             richTextBox.Padding = new Thickness(0, 10, 0, 10);
                             richTextBox.PreviewKeyDown += RichTextBox_PreviewKeyDown;
                             richTextBox.PreviewTextInput += RichTextBox_PreviewTextInput;
-                            
+
                             // TODO: Consider instead to enumerate and find first slide element with user text
                             // foreach (Rv.Data.Slide.Types.Element slideElement in action.Slide.Presentation.BaseSlide.Elements)
                             if (action.Slide.Presentation.BaseSlide.Elements.Count > 0)
@@ -84,7 +129,7 @@ namespace Pro7ChordEditor
                                         // Get current cursor position
                                         TextPointer tp = richTextBox.Document.ContentStart.GetPositionAtOffset(customAttribute.Range.Start);
                                         // Prepare a new Run to represent a Chord with string "[*]"
-                                        Run run = new Run("[" +customAttribute.Chord + "]");
+                                        Run run = new Run("[" + customAttribute.Chord + "]");
                                         // Insert new Bolded Run with new chord
                                         Bold bold = new Bold(run, tp);
                                         TextRange tr = new TextRange(run.ContentStart, run.ContentEnd);
@@ -97,12 +142,12 @@ namespace Pro7ChordEditor
 
                             }
 
-                            
+
 
                         }
                     }
                 }
-                
+
             }
 
         }
@@ -347,16 +392,40 @@ namespace Pro7ChordEditor
 
             }
 
-            
+
 
 
             // Save File
-            using (var output = File.OpenWrite(@"C:\Users\greys\Documents\ProPresenter\Libraries\Default\output.pro"))
+            string newFilePath = System.IO.Path.GetDirectoryName(selectedPro7Presentation.Path) + "\\" + presentation.Name + "-Chords.pro";
+            
+            if (File.Exists(newFilePath))
+                File.Delete(newFilePath);
+
+            using (var output = File.OpenWrite(newFilePath))
             {
                 presentation.WriteTo(output);
                 output.Close();
             }
 
+        }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            pro7Presentations = new List<Pro7Presentation>();
+            Pro7Library selectedPro7Library = (Pro7Library)((ListView)sender).SelectedItem;
+            foreach (string presentationPath in Directory.EnumerateFiles(selectedPro7Library.Path,"*.pro"))
+            {
+                pro7Presentations.Add(new Pro7Presentation { Name = System.IO.Path.GetFileName(presentationPath), Path = presentationPath });
+            }
+           
+            listPresentations.GetBindingExpression(ListView.ItemsSourceProperty).UpdateTarget();
+        }
+
+        private void listPresentations_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedPro7Presentation = (Pro7Presentation)((ListView)sender).SelectedItem;
+            if (selectedPro7Presentation != null)
+                loadPresentation(selectedPro7Presentation.Path);
         }
 
         /*private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -379,5 +448,18 @@ namespace Pro7ChordEditor
             }
         } */
 
+    }
+
+    public class Pro7Library
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
+    }
+
+
+    public class Pro7Presentation
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
     }
 }

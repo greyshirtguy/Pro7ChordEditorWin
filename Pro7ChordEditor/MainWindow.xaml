@@ -5,12 +5,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pro7ChordEditor"
         mc:Ignorable="d"
-        Title="Pro7ChordEditor" Height="450" Width="800">
-    <Grid Background="DarkGray">
-        <ScrollViewer Margin="0,0,0,52">
+        Title="Pro7ChordEditor" Height="521" Width="1037" Name="mainWindow">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="5*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="110*"></RowDefinition>
+                <RowDefinition Height="332*"></RowDefinition>
+                <RowDefinition Height="63*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ListView Grid.Row="0" ItemsSource="{Binding Pro7Libraries}" Background="Gray" Foreground="White" BorderBrush="Black" SelectionChanged="ListView_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Pro7LibIcon.png" Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ListView Name="listPresentations" Grid.Row="1" ItemsSource="{Binding Pro7Presentations}" Background="Gray" Foreground="White" BorderBrush="Black" SelectionChanged="listPresentations_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Pro7PresIcon.png" Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Grid.Row="2" Content="Save" Margin="8,8,8,8"   Click="Button_Click"/>
+        </Grid>
+        
+        <ScrollViewer Margin="0,0,0,0" Grid.Column="1" Background="LightGray">
             <StackPanel Name="stackPanel"></StackPanel>
         </ScrollViewer>
-        <Button Content="Save" Margin="8,0,0,8" Height="44" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="82" Click="Button_Click"/>
+        
 
     </Grid>
 </Window>

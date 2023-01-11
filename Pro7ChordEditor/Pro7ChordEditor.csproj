@@ -188,5 +188,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pro7LibIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pro7PresIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
