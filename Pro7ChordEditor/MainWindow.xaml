@@ -6,11 +6,11 @@
         xmlns:local="clr-namespace:Pro7ChordEditor"
         mc:Ignorable="d"
         Title="Pro7ChordEditor" Height="450" Width="800">
-    <Grid Background="DarkGray">
+    <Grid Background="DarkGreen">
         <ScrollViewer Margin="0,0,0,52">
             <StackPanel Name="stackPanel"></StackPanel>
         </ScrollViewer>
-        <Button Content="Save" Margin="8,0,0,8" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="74" Click="Button_Click"/>
+        <Button Content="Save" Margin="8,0,0,8" Height="44" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="82" Click="Button_Click"/>
 
     </Grid>
 </Window>
