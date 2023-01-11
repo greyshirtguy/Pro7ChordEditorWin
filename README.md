@@ -6,4 +6,4 @@ You can add/edit chords to the lyrics of a song by typing them in [ChordPro](htt
 
 This is not yet finished/ready to use (but I'm getting close!)
 
-Usual disclaimers apply - this is an *unsupported* 3rd party app. Use at your own risk!
+Usual disclaimers apply - this is an *unsupported* 3rd party app. Use at your own risk!.
