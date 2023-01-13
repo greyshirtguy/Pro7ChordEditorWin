@@ -8,13 +8,14 @@ This is a very simple/crude chord editor for Pro7 on Windows:
 
 You can add/edit chords to the lyrics of a song by typing them in [ChordPro](https://www.chordpro.org/) format. 
 Just type them inline with the text surrounded by square brackets. You can insert a chord by typing either [, ], or any letter from A-G.
-Once saved, the inline chords can then be displayed using the `Chords` option for textboxes on your stage display (the same as Multitracks)  
+Once saved, the inline chords can then be displayed using the `Chords` option for textboxes on your stage display (the same as Multitracks).  
 
-![Stagedisplay](Pro7ChordEditor/Graphics/Stagedisplay.png)
+![Stagedisplay](Pro7ChordEditor/Graphics/Stagedisplay.png)  
   
----
-## ⚠️⚠️⚠️This is not yet finished or ready for general use ⚠️⚠️⚠️
-However -  feel free to try out the [latest release](https://github.com/greyshirtguy/Pro7ChordEditorWin/releases/latest) after making a safe backup of you library documents!
+You can change the `User Key` to have Pro7 *automatically transpose* the chords from the `Original Key`.  
+  
+## ⚠️⚠️⚠️This is an early beta version not for production use ⚠️⚠️⚠️ ##
+However -  feel free to take the [latest release](https://github.com/greyshirtguy/Pro7ChordEditorWin/releases/latest) for a test-drive after making a safe backup of you library documents!
 
 **TODO:**
 - Test lots, discover and fix bugs until it's considered safe for general use.
