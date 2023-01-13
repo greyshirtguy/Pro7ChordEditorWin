@@ -12,7 +12,6 @@ This is not yet finished/ready to use (but I'm getting close!)
 
 TODO:
 - Test lots, discover bugs
-- Fix bug when reading existing chords (don't try to edit a file that already has chords)
 - Enable option to set original key and change key
 - Probably make a new library for all presentations saved by this app (to keep them separated in a single folder)
 

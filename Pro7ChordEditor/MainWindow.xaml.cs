@@ -22,6 +22,9 @@ using Presentation = Rv.Data.Presentation;
 using static Rv.Data.NetworkAPI_v1.Types.API_v1_Trigger_Request.Types;
 using System.Text.RegularExpressions;
 using System.Reflection;
+using static Rv.Data.Graphics.Types.Text.Types.Attributes.Types;
+using Paragraph = System.Windows.Documents.Paragraph;
+using static Rv.Data.Template.Types;
 
 namespace Pro7ChordEditor
 {
@@ -120,21 +123,72 @@ namespace Pro7ChordEditor
                                 // I know.. this is a very crude way to make a UI element that is linked to data that is edits...but it's good for a quick demo.
                                 richTextBox.Tag = slideElement;
 
-                                // TODO: Load Chords
+                                // Load Chords into a list...
+                                List<Rv.Data.Graphics.Types.Text.Types.Attributes.Types.CustomAttribute> customAttributes = new List<Rv.Data.Graphics.Types.Text.Types.Attributes.Types.CustomAttribute>();
                                 foreach (Rv.Data.Graphics.Types.Text.Types.Attributes.Types.CustomAttribute customAttribute in slideElement.Element_.Text.Attributes.CustomAttributes)
                                 {
                                     if (customAttribute.AttributeCase == Graphics.Types.Text.Types.Attributes.Types.CustomAttribute.AttributeOneofCase.Chord)
                                     {
-
-                                        // Get current cursor position
-                                        TextPointer tp = richTextBox.Document.ContentStart.GetPositionAtOffset(customAttribute.Range.Start);
-                                        // Prepare a new Run to represent a Chord with string "[*]"
-                                        Run run = new Run("[" + customAttribute.Chord + "]");
-                                        // Insert new Bolded Run with new chord
-                                        Bold bold = new Bold(run, tp);
-                                        TextRange tr = new TextRange(run.ContentStart, run.ContentEnd);
-                                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Gray);
+                                        customAttributes.Add(customAttribute);
                                     }
+                                }
+
+                                // Reverse sort list by chord position
+                                customAttributes = customAttributes.OrderByDescending(o=>o.Range.Start).ToList();
+
+                                // Insert Chords inline in reverse order (this way is easier to use original range.start to decide where to insert)
+                                foreach (Rv.Data.Graphics.Types.Text.Types.Attributes.Types.CustomAttribute customChordAttribute in customAttributes)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("chord: " + customChordAttribute.Chord + " " + customChordAttribute.Range.Start);
+                                    // Get insertion textpointer by 
+                                    TextPointer tp = richTextBox.Document.ContentStart;
+                                    int counter = 0;
+                                    bool found = false;
+                                    foreach (Block block in richTextBox.Document.Blocks)
+                                    {
+                                        if (found)
+                                            break;
+
+                                        if (block.GetType() == typeof(Paragraph))
+                                        {
+                                            Paragraph paragraph = (Paragraph)block;
+                                            foreach (Inline inline in paragraph.Inlines)
+                                            {
+                                                if (found)
+                                                    break;
+
+                                                if (inline.GetType() == typeof(Run))
+                                                {
+                                                    Run runInline = (Run)inline;
+                                                    System.Diagnostics.Debug.WriteLine("Run Text: " + runInline.Text + " length: " + runInline.Text.Length);
+                                                    if (counter + runInline.Text.Length <= customChordAttribute.Range.Start)
+                                                    {
+                                                        counter += runInline.Text.Length;
+                                                        System.Diagnostics.Debug.WriteLine("Incrementing Counter: " + counter);
+                                                    } 
+                                                    else
+                                                    {
+                                                        // This run contains the position of the chord...
+                                                        tp = runInline.ContentStart.GetPositionAtOffset(customChordAttribute.Range.Start - counter);
+                                                        System.Diagnostics.Debug.WriteLine("Text after chord position:" + tp.GetTextInRun(LogicalDirection.Forward));
+                                                        found = true;
+                                                        break;
+                                                    }
+                                                    
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (!found)
+                                        tp = richTextBox.Document.ContentEnd;
+
+                                    // Prepare a new Run to represent a Chord with string "[*]"
+                                    Run run = new Run("[" + customChordAttribute.Chord + "]");
+                                    // Insert new Bolded Run with new chord
+                                    Bold bold = new Bold(run, tp);
+                                    TextRange tr = new TextRange(run.ContentStart, run.ContentEnd);
+                                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Gray);
                                 }
 
                                 // Add RichTextBox after rtf is loaded and converted to plain text...
@@ -463,3 +517,4 @@ namespace Pro7ChordEditor
         public string Path { get; set; }
     }
 }
+
