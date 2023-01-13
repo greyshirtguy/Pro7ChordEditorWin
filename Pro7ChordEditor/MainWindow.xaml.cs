@@ -575,8 +575,21 @@ namespace Pro7ChordEditor
                 presentation.Music = music;
             }
 
-            presentation.Music.Original = musicKeyScales[cboOriginalKey.SelectedIndex];
-            presentation.Music.User = musicKeyScales[cboUserKey.SelectedIndex];
+            try
+            {
+                if (cboOriginalKey.SelectedIndex >= 0)
+                    presentation.Music.Original = musicKeyScales[cboOriginalKey.SelectedIndex];
+                else
+                    presentation.Music.Original = musicKeyScales[0];
+                if (cboUserKey.SelectedIndex >= 0)
+                    presentation.Music.User = musicKeyScales[cboUserKey.SelectedIndex];
+                else
+                    presentation.Music.User = musicKeyScales[0];
+            }
+            catch (Exception ex)
+            {
+                addLog("Excpetion: " + ex.Message);
+            }
 
             addLog("Original Key: " + presentation.Music.Original);
             addLog("User Key: " + presentation.Music.User);
