@@ -12,6 +12,7 @@ Once saved, the inline chords can then be displayed using the `Chords` option fo
 
 ![Stagedisplay](Pro7ChordEditor/Graphics/Stagedisplay.png)  
   
+NB: You cannot edit the text of the song - you can only add/edit chords.  
 You can change the `User Key` to have Pro7 *automatically transpose* the chords from the `Original Key`.  
   
 ⚠️This is an early beta version not for production use ⚠️  
