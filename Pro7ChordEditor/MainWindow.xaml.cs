@@ -27,6 +27,7 @@ using Paragraph = System.Windows.Documents.Paragraph;
 using static Rv.Data.Template.Types;
 using static Rv.Data.MusicKeyScale.Types;
 using static Rv.Data.PlaylistItem.Types;
+using System.Diagnostics;
 
 namespace Pro7ChordEditor
 {
@@ -483,13 +484,19 @@ namespace Pro7ChordEditor
                 // Clear all existing chord attributes
                 foreach (var customAttribute in slideElement.Element_.Text.Attributes.CustomAttributes)
                 {
-                    if (customAttribute.AttributeCase == Graphics.Types.Text.Types.Attributes.Types.CustomAttribute.AttributeOneofCase.Chord)
+                    System.Diagnostics.Debug.WriteLine(customAttribute);
+                    if (customAttribute.AttributeCase == Graphics.Types.Text.Types.Attributes.Types.CustomAttribute.AttributeOneofCase.Chord || customAttribute.Chord.Length > 0)
                     {
+                        System.Diagnostics.Debug.WriteLine("^Removed");
                         slideElement.Element_.Text.Attributes.CustomAttributes.Remove(customAttribute);
-                        customAttribute.ClearAttribute();
                     }
                 }
 
+                foreach (var customAttribute1 in customChordAttributes)
+                {
+                    System.Diagnostics.Debug.WriteLine("Adding: " + customAttribute1);
+                }
+                
                 // Add our modified chord attributes
                 if (customChordAttributes.Any())
                     slideElement.Element_.Text.Attributes.CustomAttributes.Add(customChordAttributes);
@@ -522,6 +529,7 @@ namespace Pro7ChordEditor
                 presentation.WriteTo(output);
                 output.Close();
             }
+            MessageBox.Show(presentation.Name + "-Chords.pro saved.");
 
         }
 
@@ -542,6 +550,18 @@ namespace Pro7ChordEditor
             selectedPro7Presentation = (Pro7Presentation)((ListView)sender).SelectedItem;
             if (selectedPro7Presentation != null)
                 loadPresentation(selectedPro7Presentation.Path);
+        }
+
+        private void mainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Warn user - don't run at same time as Pro7
+            Process[] processes = Process.GetProcessesByName("ProPresenter");
+            if (processes.Length > 0)
+                MessageBox.Show(this, "You should not run this at same time as Pro7." + Environment.NewLine + "To avoid file corruptions, quit Pro7");
+         
+
+
+            MessageBox.Show(this, "Make sure you have a good backup of your Pro7 library documents!");
         }
 
         /*private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)

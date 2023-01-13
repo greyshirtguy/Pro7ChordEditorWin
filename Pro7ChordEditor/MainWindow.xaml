@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pro7ChordEditor"
         mc:Ignorable="d"
-        Title="Pro7ChordEditor" Height="521" Width="1037" Name="mainWindow">
+        Title="Pro7ChordEditor" Height="521" Width="1037" Name="mainWindow" Loaded="mainWindow_Loaded" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
