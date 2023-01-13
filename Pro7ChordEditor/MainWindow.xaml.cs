@@ -183,8 +183,10 @@ namespace Pro7ChordEditor
                                 List<Rv.Data.Graphics.Types.Text.Types.Attributes.Types.CustomAttribute> customAttributes = new List<Rv.Data.Graphics.Types.Text.Types.Attributes.Types.CustomAttribute>();
                                 foreach (Rv.Data.Graphics.Types.Text.Types.Attributes.Types.CustomAttribute customAttribute in slideElement.Element_.Text.Attributes.CustomAttributes)
                                 {
+                                    System.Diagnostics.Debug.WriteLine("Found Custom Attribute: " + customAttribute);
                                     if (customAttribute.AttributeCase == Graphics.Types.Text.Types.Attributes.Types.CustomAttribute.AttributeOneofCase.Chord)
                                     {
+                                        System.Diagnostics.Debug.WriteLine("Adding Custom Attribute: " + customAttribute);
                                         customAttributes.Add(customAttribute);
                                     }
                                 }
@@ -482,13 +484,14 @@ namespace Pro7ChordEditor
                 Rv.Data.Slide.Types.Element slideElement = (Rv.Data.Slide.Types.Element)richTextBox.Tag;
 
                 // Clear all existing chord attributes
-                foreach (var customAttribute in slideElement.Element_.Text.Attributes.CustomAttributes)
+                for (int index = slideElement.Element_.Text.Attributes.CustomAttributes.Count-1; index >= 0; index--)
                 {
+                    CustomAttribute customAttribute = slideElement.Element_.Text.Attributes.CustomAttributes[index];
                     System.Diagnostics.Debug.WriteLine(customAttribute);
-                    if (customAttribute.AttributeCase == Graphics.Types.Text.Types.Attributes.Types.CustomAttribute.AttributeOneofCase.Chord || customAttribute.Chord.Length > 0)
+                    if (customAttribute.Chord.Length > 0)
                     {
                         System.Diagnostics.Debug.WriteLine("^Removed");
-                        slideElement.Element_.Text.Attributes.CustomAttributes.Remove(customAttribute);
+                        slideElement.Element_.Text.Attributes.CustomAttributes.Remove(customAttribute); // TODO: HERE IS BUG!!!
                     }
                 }
 
@@ -502,9 +505,11 @@ namespace Pro7ChordEditor
                     slideElement.Element_.Text.Attributes.CustomAttributes.Add(customChordAttributes);
 
 
-                // Process ChordPro text into customattributes
-                //TextRange range = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
-                //String plainText = range.Text;
+                System.Diagnostics.Debug.WriteLine("About to save custom attributes:");
+                foreach (var customAttribute2 in slideElement.Element_.Text.Attributes.CustomAttributes)
+                {
+                    System.Diagnostics.Debug.WriteLine(customAttribute2);
+                }
 
             }
 
