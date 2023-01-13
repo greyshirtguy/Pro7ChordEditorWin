@@ -4,11 +4,11 @@
 
 This is a very simple/crude chord editor for Pro7 on Windows:
 ![Screenshot](Pro7ChordEditor/Graphics/Screenshot.png)
-*Mac version is on my "TODO oneday list"*
+*Mac version is on my "TODO one-day list"*
 
-You can add/edit chords to the lyrics of a song by typing them in [ChordPro](https://www.chordpro.org/) format. 
-Just type them inline with the text surrounded by square brackets. You can insert a chord by typing either [, ], or any letter from A-G.
-Once saved, the inline chords can then be displayed using the `Chords` option for textboxes on your stage display (the same as Multitracks).  
+You can add/edit chords to the lyrics of a song by typing them in [ChordPro](https://www.chordpro.org/) format. (Close Pro7 first).  
+Just type them directly inline with the lyrics text [in square brackets]. You can insert a chord by typing either [, ], or any letter from A-G.
+Once saved, re-open Pro7 and the inline chords can then be displayed using the `Chords` option for textboxes on your stage display (the same as Multitracks).  
 
 ![Stagedisplay](Pro7ChordEditor/Graphics/Stagedisplay.png)  
   
