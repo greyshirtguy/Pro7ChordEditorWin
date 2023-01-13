@@ -8,14 +8,16 @@ This is a very simple/crude chord editor for Pro7 on Windows.
 You can add/edit chords to the lyrics of a song by typing them in [ChordPro](https://www.chordpro.org/) format - where chords are inline text inside square brackets.
 Those chords can then be displayed using the `Chords` option for textboxes on your stage display.
 
-This is not yet finished/ready to use (but I'm getting close!)
+## ⚠️⚠️⚠️This is not yet finished or ready for general use ⚠️⚠️⚠️
+However -  feel free to try out the [latest release](https://github.com/greyshirtguy/Pro7ChordEditorWin/releases/latest) after making a safe backup of you library documents!
 
 TODO:
-- Test lots, discover bugs
+- Test lots, discover and fix bugs until it's considered safe for general use.
 - Probably make a new library for all presentations saved by this app (to keep them separated in a single folder)
 - Perhaps add backups?
 
-For now, it will NOT edit existing files - instead, when you save changes - it makes a copy of that file with a new name (-chord suffix added).
+For safety it will NOT overwrite your existing files! Instead, when you save changes - it makes a copy of that file with a new name (-chord suffix added).
+*If you choose to edit the new copy with -chord suffux - saved changes will overwrite that file*
 
 Usual disclaimers apply - this is an *unsupported* 3rd party app - and it's very early in development - Use at your own risk!
 
