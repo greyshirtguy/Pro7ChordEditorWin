@@ -21,6 +21,8 @@ However -  feel free to take the [latest release](https://github.com/greyshirtgu
 ...after making a 🦺BACKUP OF YOUR LIBRARIES🦺
 
 **TODO:**
+- Add log file - log `all the things!`
+- Advertise for some publix testers
 - Test lots, gather feedback, discover and fix bugs until it's considered safe for general use.
 - Currently it defaults to only looking at the *first* textbox on each slide - no support for 2nd/3rd etc textboxes...
 - Probably make a new library for all presentations saved by this app (to keep them separated in a single folder)
