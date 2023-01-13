@@ -25,6 +25,8 @@ using System.Reflection;
 using static Rv.Data.Graphics.Types.Text.Types.Attributes.Types;
 using Paragraph = System.Windows.Documents.Paragraph;
 using static Rv.Data.Template.Types;
+using static Rv.Data.MusicKeyScale.Types;
+using static Rv.Data.PlaylistItem.Types;
 
 namespace Pro7ChordEditor
 {
@@ -36,6 +38,7 @@ namespace Pro7ChordEditor
         private Pro7Presentation selectedPro7Presentation;
         private List<Pro7Library> pro7Libraries;
         private List<Pro7Presentation> pro7Presentations;
+        private List<MusicKeyScale> musicKeyScales;
 
         Rv.Data.Presentation presentation;
 
@@ -49,10 +52,38 @@ namespace Pro7ChordEditor
             get { return pro7Presentations; }
         }
 
+        
+
         public MainWindow()
         {
             InitializeComponent();
             mainWindow.Title = mainWindow.Title + " (" + Assembly.GetExecutingAssembly().GetName().Version + ")";
+
+            // Quick and rough way to build combobox list of all keys/scale without a proper data binding....
+            musicKeyScales = new List<MusicKeyScale>();
+            foreach (MusicKey key in Enum.GetValues(typeof(MusicKeyScale.Types.MusicKey)))
+            {
+                foreach (MusicScale scale in Enum.GetValues(typeof(MusicKeyScale.Types.MusicScale)))
+                {
+                    // Keep a reference list of MusicKeyScale objects for easy lookup/conversion from selected combobox items...
+                    MusicKeyScale musicKeyScale = new MusicKeyScale();
+                    musicKeyScale.MusicKey = key;
+                    musicKeyScale.MusicScale = scale;
+                    musicKeyScales.Add(musicKeyScale);
+
+                    if (scale == MusicScale.Minor)
+                    {
+                        cboOriginalKey.Items.Add(key.ToString().Replace("Flat", "b").Replace("Sharp", "#") + " Min");
+                        cboUserKey.Items.Add(key.ToString().Replace("Flat", "b").Replace("Sharp", "#") + " Min");
+                    } else
+                    {
+                        cboOriginalKey.Items.Add(key.ToString().Replace("Flat", "b").Replace("Sharp", "#"));
+                        cboUserKey.Items.Add(key.ToString().Replace("Flat", "b").Replace("Sharp", "#"));
+                    }
+                }
+            }
+
+
             pro7Libraries = new List<Pro7Library>();
             string pro7SystemFolder;
             try
@@ -87,6 +118,30 @@ namespace Pro7ChordEditor
             using (var input = File.OpenRead(presentationPath))
             {
                 presentation = Rv.Data.Presentation.Parser.ParseFrom(input);
+
+                try
+                {
+                    // Get string representation of original key
+                    string originalKey = presentation.Music.Original.MusicKey.ToString();
+                    if (presentation.Music.Original.MusicScale == MusicScale.Minor)
+                        originalKey += " Min";
+
+                    // Select matching original key on cboOriginalKey
+                    cboOriginalKey.SelectedIndex = cboOriginalKey.Items.IndexOf(originalKey);
+
+                    // Get string representation of user key
+                    string userKey = presentation.Music.User.MusicKey.ToString();
+                    if (presentation.Music.User.MusicScale == MusicScale.Minor)
+                        userKey += " Min";
+
+                    // Select matching user key on cboUserKey
+                    cboUserKey.SelectedIndex = cboUserKey.Items.IndexOf(userKey);
+                } 
+                catch (Exception ex)
+                { 
+                    //TODO: handle!
+                }
+
                 foreach (Rv.Data.Cue cue in presentation.Cues)
                 {
                     foreach (Rv.Data.Action action in cue.Actions)
@@ -446,8 +501,15 @@ namespace Pro7ChordEditor
 
             }
 
+            // Update Original and User MusicKeyScale (matching selected combo-box item to master list of all MUSICKEYSCALES
+            if (presentation.Music == null)
+            {
+                Presentation.Types.Music music = new Presentation.Types.Music();
+                presentation.Music = music;
+            }
 
-
+            presentation.Music.Original = musicKeyScales[cboOriginalKey.SelectedIndex];
+            presentation.Music.User = musicKeyScales[cboUserKey.SelectedIndex];
 
             // Save File
             string newFilePath = System.IO.Path.GetDirectoryName(selectedPro7Presentation.Path) + "\\" + presentation.Name + "-Chords.pro";
