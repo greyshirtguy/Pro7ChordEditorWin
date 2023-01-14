@@ -2,7 +2,7 @@
 
 *Yep, it does what is says on the box!*  
 
-This is a very simple/crude chord editor for Pro7 on Windows:
+This is a very simple/crude chord editor for Pro7 on Windows: (For now, editing MT documents is blocked until I learn is this is safe/okay.)
 ![Screenshot](Pro7ChordEditor/Graphics/Screenshot.png)
 *Mac version is on my "TODO one-day list"*
 
@@ -15,7 +15,7 @@ Once saved, re-open Pro7 and the inline chords can then be displayed using the `
 NB: You cannot edit the text of the song - you can only add/edit chords.  
 You can change the `User Key` to have Pro7 *automatically transpose* the chords from the `Original Key`.  
   
-⚠️This is an early beta version not for production use ⚠️  
+⚠️This is an early beta version not for production use. ⚠️  
 
 However -  feel free to take the [latest release](https://github.com/greyshirtguy/Pro7ChordEditorWin/releases/latest) for a test-drive...   
 ...after making a 🦺BACKUP OF YOUR LIBRARIES🦺

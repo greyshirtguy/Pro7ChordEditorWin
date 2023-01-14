@@ -28,6 +28,7 @@ using static Rv.Data.Template.Types;
 using static Rv.Data.MusicKeyScale.Types;
 using static Rv.Data.PlaylistItem.Types;
 using System.Diagnostics;
+using System.Runtime.Remoting.Contexts;
 
 namespace Pro7ChordEditor
 {
@@ -155,6 +156,16 @@ namespace Pro7ChordEditor
                 try
                 {
                     presentation = Rv.Data.Presentation.Parser.ParseFrom(input);
+                    if (presentation.MultiTracksLicensing != null)
+                    {
+                        TextBlock tb = new TextBlock();
+                        tb.FontSize = 24;
+                        tb.IsEnabled = false;
+                        tb.TextWrapping = TextWrapping.Wrap;
+                        tb.Text = "This is a MultiTracks document." + Environment.NewLine + "The license agreement between RV & MT does not allow RV to offer editing in Pro7." + Environment.NewLine + Environment.NewLine + "For now, until I learn more...To keep this app safe from any legal issues (or getting on the bad side of any big company), editing MT documents is disabled in this app as well.";
+                        stackPanel.Children.Add(tb);
+                        return;
+                    }
                 }
                 catch (Exception ex)
                 {
