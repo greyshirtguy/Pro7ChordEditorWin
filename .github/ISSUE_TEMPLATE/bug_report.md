@@ -7,6 +7,9 @@ assignees: greyshirtguy
 
 ---
 
+** Which version of PRo7ChordEditor are you using**
+See version # in Window Title.
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
