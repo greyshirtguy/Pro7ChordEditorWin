@@ -32,6 +32,7 @@ ProPresenter -> About
 **Desktop (please complete the following information):**
  Run "Winver" and report version of Windows you are using.
 
-**Additional context**
+** Log file & Additional context**
+Please attach the `Pro7ChordEditor.log` file that was created in the application folder.
 Add any other context about the problem here. 
-Ideally, attach the .pro document you are tyring to edit!
+Ideally, attach the .pro document you are tyring to edit
