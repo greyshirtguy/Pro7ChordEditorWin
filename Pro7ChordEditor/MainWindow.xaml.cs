@@ -88,25 +88,37 @@ namespace Pro7ChordEditor
                 }
             }
 
-            pro7Libraries = new List<Pro7Library>();
-            string pro7SystemFolder;
-            try
+
+            string pro7SystemFolder;  // Default = %USERPROFILE%\Documents\ProPresenter but it can be customised/moved in Preferences...
+            
+            // Check if Pro7 system folder has been moved/customised...
+            string customPathSettingsFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\RenewedVision\\ProPresenter\\PathSettings.proPaths";
+            if (File.Exists(customPathSettingsFilePath))
             {
-                using (var sr = new StreamReader(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\RenewedVision\\ProPresenter\\PathSettings.proPaths"))
+                try
                 {
-                    pro7SystemFolder = Regex.Match(sr.ReadToEnd().Replace(@"\\",@"\"), @"(?<=Base=).*(?=;)").Value;
-                    addLog("Pro7 System Folder: " + pro7SystemFolder);
-
+                    using (var sr = new StreamReader(customPathSettingsFilePath))
+                    {
+                        pro7SystemFolder = Regex.Match(sr.ReadToEnd().Replace(@"\\", @"\"), @"(?<=Base=).*(?=;)").Value;
+                        addLog("Pro7 System Folder In Custom Location: " + pro7SystemFolder);
+                    }
                 }
-            }
-            catch (IOException e)
+                catch (IOException e)
+                {
+                    addLog("Exception " + e.Message + " while trying to read PathSettings.proPaths");
+                    MessageBox.Show("Exception " + e.Message + " while trying to read PathSettings.proPaths");
+                    return;
+                }
+            } else
             {
-                addLog("Exception " + e.Message + " while trying to read PathSettings.proPaths");
-                MessageBox.Show("Exception " + e.Message + " while trying to read PathSettings.proPaths");
-                return;
+                pro7SystemFolder = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "ProPresenter\\");
+                addLog("Assuming pro7SystemFolder=" + pro7SystemFolder);
             }
 
-            if (Directory.Exists(pro7SystemFolder))
+            // Create list to store all Libraries found 
+            pro7Libraries = new List<Pro7Library>();
+
+            if (Directory.Exists(pro7SystemFolder + "Libraries"))
             {
                 foreach (string libraryFolder in Directory.EnumerateDirectories(pro7SystemFolder + "Libraries"))
                 {
@@ -116,9 +128,9 @@ namespace Pro7ChordEditor
             }
             else
             {
-                addLog(pro7SystemFolder + " not found");
-                MessageBox.Show(pro7SystemFolder + " not found");
-                return;
+                addLog(pro7SystemFolder + "Libraries not found");
+                MessageBox.Show(pro7SystemFolder + "Libraries not found.\n\n**Make sure Pro7 installed before using this app**");
+                this.Close(); // quit app - no library folders found!
             }
 
             this.DataContext = this;
