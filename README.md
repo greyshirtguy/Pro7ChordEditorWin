@@ -15,9 +15,9 @@ Once saved, re-open Pro7 and the inline chords can then be displayed using the `
 NB: You cannot edit the text of the song - you can only add/edit chords.  
 You can change the `User Key` to have Pro7 *automatically transpose* the chords from the `Original Key`.  
   
-⚠️This is an early beta version not for production use. ⚠️  
+⚠️This is an early beta version not for production use.⚠️  
 
-However -  feel free to take the [latest release](https://github.com/greyshirtguy/Pro7ChordEditorWin/releases/latest) for a test-drive...   
+However - feel free to take the [latest release](https://github.com/greyshirtguy/Pro7ChordEditorWin/releases/latest) for a test-drive...   
 ...after making a 🦺BACKUP OF YOUR LIBRARIES🦺
 
 **TODO:**
@@ -28,7 +28,7 @@ However -  feel free to take the [latest release](https://github.com/greyshirtgu
 - Perhaps add backups?
 
 For safety it will NOT overwrite your existing files! Instead, when you save changes - it makes a copy of that file with a new name (-chord suffix added).
-*If you choose to edit the new copy with -chord suffux - saved changes will overwrite that file*
+*If you choose to edit the new copy with -chord suffix, saved changes will overwrite that file*
 
 Usual disclaimers apply - this is an *unsupported* 3rd party app - and it's very early in development - Use at your own risk!
 
