@@ -182,27 +182,17 @@ namespace Pro7ChordEditor
                     addLog("Exception: " + ex.Message + " during parsing");
                 }
 
-                try
+                if (presentation.Music != null)
                 {
-                    // Get string representation of original key
                     string originalKey = presentation.Music.Original.MusicKey.ToString();
                     if (presentation.Music.Original.MusicScale == MusicScale.Minor)
                         originalKey += " Min";
-
-                    // Select matching original key on cboOriginalKey
                     cboOriginalKey.SelectedIndex = cboOriginalKey.Items.IndexOf(originalKey);
 
-                    // Get string representation of user key
                     string userKey = presentation.Music.User.MusicKey.ToString();
                     if (presentation.Music.User.MusicScale == MusicScale.Minor)
                         userKey += " Min";
-
-                    // Select matching user key on cboUserKey
                     cboUserKey.SelectedIndex = cboUserKey.Items.IndexOf(userKey);
-                }
-                catch (Exception ex)
-                {
-                    addLog("Exception " + ex.Message + " while trying to determine original and user key.");
                 }
 
                 foreach (Rv.Data.Cue cue in presentation.Cues)
