@@ -57,34 +57,42 @@
                 </ListView.ItemTemplate>
             </ListView>
             <Grid Grid.Row="2">
-                <ComboBox Name="cboOriginalKey"
-                          Margin="90,4,10,0"
-                          Height="20"
-                          VerticalAlignment="Top" />
-                <ComboBox Name="cboUserKey"
-                          Margin="90,30,10,0"
-                          RenderTransformOrigin="0.618,1.893"
-                          Height="20"
-                          VerticalAlignment="Top" />
-                <Button Content="Save"
-                        Margin="8,56,8,7"
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0"
+                      VerticalAlignment="Center"
+                      Margin="4">
+                    <Label Content="Original Key:"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Height="17"
+                           Padding="0"
+                           HorizontalContentAlignment="Right" />
+                    <ComboBox Name="cboOriginalKey"
+                              Height="20"
+                              Width="80"
+                              HorizontalAlignment="Right" />
+                </Grid>
+                <Grid Grid.Row="1"
+                      Margin="4">
+                    <Label Content="User Key:"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Height="17"
+                           Padding="0"
+                           HorizontalContentAlignment="Right" />
+                    <ComboBox Name="cboUserKey"
+                              Height="20"
+                              Width="80"
+                              HorizontalAlignment="Right" />
+                </Grid>
+                <Button Grid.Row="2"
+                        Margin="4"
+                        Content="Save"
                         Click="Button_Click" />
-                <Label Content="Original Key:"
-                       HorizontalAlignment="Left"
-                       Margin="18,6,0,0"
-                       VerticalAlignment="Top"
-                       Height="17"
-                       Padding="0,0,0,0"
-                       HorizontalContentAlignment="Right"
-                       Width="69" />
-                <Label Content="User Key:"
-                       HorizontalAlignment="Left"
-                       Margin="31,31,0,0"
-                       VerticalAlignment="Top"
-                       Height="17"
-                       Padding="0,0,0,0"
-                       HorizontalContentAlignment="Right"
-                       Width="54" />
             </Grid>
         </Grid>
         <ScrollViewer Margin="0,0,0,0" Grid.Column="1" Background="LightGray">
