@@ -578,19 +578,19 @@ namespace Pro7ChordEditor
             }
             catch (Exception ex)
             {
-                addLog("Excpetion: " + ex.Message);
+                addLog("Exception: " + ex.Message);
             }
 
             addLog("Original Key: " + presentation.Music.Original);
             addLog("User Key: " + presentation.Music.User);
 
             // Save File
-            addLog("About to write file: " + System.IO.Path.GetDirectoryName(selectedPro7Presentation.Path) + "\\" + presentation.Name + "-Chords.pro");
-            string newFilePath = System.IO.Path.GetDirectoryName(selectedPro7Presentation.Path) + "\\" + presentation.Name + "-Chords.pro";
+            addLog("About to write file: " + System.IO.Path.GetDirectoryName(selectedPro7Presentation.Path) + "\\" + presentation.Name + " (Chords).pro");
+            string newFilePath = System.IO.Path.GetDirectoryName(selectedPro7Presentation.Path) + "\\" + presentation.Name + " (Chords).pro";
 
             if (File.Exists(newFilePath))
             {
-                addLog("Removed existing: " + System.IO.Path.GetDirectoryName(selectedPro7Presentation.Path) + "\\" + presentation.Name + "-Chords.pro");
+                addLog("Removed existing: " + System.IO.Path.GetDirectoryName(selectedPro7Presentation.Path) + "\\" + presentation.Name + " (Chords).pro");
                 File.Delete(newFilePath);
             }
 
@@ -601,7 +601,7 @@ namespace Pro7ChordEditor
                 output.Close();
                 addLog("Closed");
             }
-            MessageBox.Show(presentation.Name + "-Chords.pro saved.");
+            MessageBox.Show(presentation.Name + " (Chords).pro saved.");
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
