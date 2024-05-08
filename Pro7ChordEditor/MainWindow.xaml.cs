@@ -610,7 +610,13 @@ namespace Pro7ChordEditor
             Pro7Library selectedPro7Library = (Pro7Library)((ListView)sender).SelectedItem;
             foreach (string presentationPath in Directory.EnumerateFiles(selectedPro7Library.Path, "*.pro"))
             {
-                pro7Presentations.Add(new Pro7Presentation { Name = System.IO.Path.GetFileName(presentationPath), Path = presentationPath });
+                string name = System.IO.Path.GetFileName(presentationPath);
+                if (name.EndsWith(" (Chords).pro"))
+                {
+                    addLog("Skipping Chords version: " + name);
+                    continue;
+                }
+                pro7Presentations.Add(new Pro7Presentation { Name = name, Path = presentationPath });
             }
 
             listPresentations.GetBindingExpression(ListView.ItemsSourceProperty).UpdateTarget();
@@ -620,7 +626,16 @@ namespace Pro7ChordEditor
         {
             selectedPro7Presentation = (Pro7Presentation)((ListView)sender).SelectedItem;
             if (selectedPro7Presentation != null)
-                loadPresentation(selectedPro7Presentation.Path);
+            {
+                string presentationPath = selectedPro7Presentation.Path;
+                // Check if there already is a Chords version of the presentation, if so, load that instead
+                if (File.Exists(presentationPath.Substring(0, presentationPath.Length - 4) + " (Chords).pro"))
+                {
+                    presentationPath = presentationPath.Substring(0, presentationPath.Length - 4) + " (Chords).pro";
+                    selectedPro7Presentation = new Pro7Presentation { Name = System.IO.Path.GetFileName(presentationPath), Path = presentationPath };
+                }
+                loadPresentation(presentationPath);
+            }
         }
 
         private void mainWindow_Loaded(object sender, RoutedEventArgs e)
