@@ -55,8 +55,6 @@ namespace Pro7ChordEditor
             get { return pro7Presentations; }
         }
 
-        
-
         public MainWindow()
         {
             InitializeComponent();
@@ -80,7 +78,8 @@ namespace Pro7ChordEditor
                     {
                         cboOriginalKey.Items.Add(key.ToString().Replace("Flat", "b").Replace("Sharp", "#") + " Min");
                         cboUserKey.Items.Add(key.ToString().Replace("Flat", "b").Replace("Sharp", "#") + " Min");
-                    } else
+                    }
+                    else
                     {
                         cboOriginalKey.Items.Add(key.ToString().Replace("Flat", "b").Replace("Sharp", "#"));
                         cboUserKey.Items.Add(key.ToString().Replace("Flat", "b").Replace("Sharp", "#"));
@@ -88,9 +87,8 @@ namespace Pro7ChordEditor
                 }
             }
 
-
             string pro7SystemFolder;  // Default = %USERPROFILE%\Documents\ProPresenter but it can be customised/moved in Preferences...
-            
+
             // Check if Pro7 system folder has been moved/customised...
             string customPathSettingsFilePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\RenewedVision\\ProPresenter\\PathSettings.proPaths";
             if (File.Exists(customPathSettingsFilePath))
@@ -109,7 +107,8 @@ namespace Pro7ChordEditor
                     MessageBox.Show("Exception " + e.Message + " while trying to read PathSettings.proPaths");
                     return;
                 }
-            } else
+            }
+            else
             {
                 pro7SystemFolder = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "ProPresenter\\");
                 addLog("Assuming pro7SystemFolder=" + pro7SystemFolder);
@@ -134,7 +133,6 @@ namespace Pro7ChordEditor
             }
 
             this.DataContext = this;
-
         }
 
         private void addLog(string logMessage)
@@ -155,7 +153,7 @@ namespace Pro7ChordEditor
             }
             catch (Exception ex)
             {
-                // TODO: 
+                // TODO:
             }
         }
 
@@ -201,7 +199,7 @@ namespace Pro7ChordEditor
 
                     // Select matching user key on cboUserKey
                     cboUserKey.SelectedIndex = cboUserKey.Items.IndexOf(userKey);
-                } 
+                }
                 catch (Exception ex)
                 {
                     addLog("Exception " + ex.Message + " while trying to determine original and user key.");
@@ -228,13 +226,13 @@ namespace Pro7ChordEditor
                             if (action.Slide.Presentation.BaseSlide.Elements.Count > 0)
                             {
                                 // Load text....
-                                
                                 Rv.Data.Slide.Types.Element slideElement = action.Slide.Presentation.BaseSlide.Elements[0];
                                 addLog("Processing text from first slide element: " + slideElement.Element_.Name);
                                 MemoryStream stream = new MemoryStream(ASCIIEncoding.Default.GetBytes(slideElement.Element_.Text.RtfData.ToStringUtf8()));
                                 TextRange range = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
                                 range.Load(stream, DataFormats.Rtf);
                                 range.ClearAllProperties();
+
                                 // Convert RTF to plain text (with no spacing between lines/paragraphs)
                                 String plainText = range.Text;
                                 addLog("Text: " + plainText);
@@ -250,7 +248,7 @@ namespace Pro7ChordEditor
 
                                 // Load Chords into a list...
                                 addLog("Loading Chords into a list");
-                                List <Rv.Data.Graphics.Types.Text.Types.Attributes.Types.CustomAttribute> customAttributes = new List<Rv.Data.Graphics.Types.Text.Types.Attributes.Types.CustomAttribute>();
+                                List<Rv.Data.Graphics.Types.Text.Types.Attributes.Types.CustomAttribute> customAttributes = new List<Rv.Data.Graphics.Types.Text.Types.Attributes.Types.CustomAttribute>();
                                 foreach (Rv.Data.Graphics.Types.Text.Types.Attributes.Types.CustomAttribute customAttribute in slideElement.Element_.Text.Attributes.CustomAttributes)
                                 {
                                     addLog("Found Custom Attribute: " + customAttribute);
@@ -263,7 +261,7 @@ namespace Pro7ChordEditor
 
                                 // Reverse sort list by chord position
                                 addLog("Reversing list");
-                                customAttributes = customAttributes.OrderByDescending(o=>o.Range.Start).ToList();
+                                customAttributes = customAttributes.OrderByDescending(o => o.Range.Start).ToList();
 
                                 // Insert Chords inline in reverse order (this way is easier to use original range.start to decide where to insert)
                                 foreach (Rv.Data.Graphics.Types.Text.Types.Attributes.Types.CustomAttribute customChordAttribute in customAttributes)
@@ -294,7 +292,7 @@ namespace Pro7ChordEditor
                                                     {
                                                         counter += runInline.Text.Length;
                                                         addLog("Length Counter now: " + counter);
-                                                    } 
+                                                    }
                                                     else
                                                     {
                                                         // This run contains the position of the chord...
@@ -303,7 +301,6 @@ namespace Pro7ChordEditor
                                                         found = true;
                                                         break;
                                                     }
-                                                    
                                                 }
                                             }
                                         }
@@ -314,6 +311,7 @@ namespace Pro7ChordEditor
 
                                     // Prepare a new Run to represent a Chord with string "[*]"
                                     Run run = new Run("[" + customChordAttribute.Chord + "]");
+
                                     // Insert new Bolded Run with new chord
                                     Bold bold = new Bold(run, tp);
                                     TextRange tr = new TextRange(run.ContentStart, run.ContentEnd);
@@ -322,17 +320,11 @@ namespace Pro7ChordEditor
 
                                 // Add RichTextBox after rtf is loaded and converted to plain text...
                                 stackPanel.Children.Add(richTextBox);
-
                             }
-
-
-
                         }
                     }
                 }
-
             }
-
         }
 
         private bool isCursorInsideChord(object sender)
@@ -435,13 +427,8 @@ namespace Pro7ChordEditor
                         // Block all other keystrokes.
                         e.Handled = true;
                     }
-
                     break;
             }
-
-
-
-
         }
 
         private void RichTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -456,7 +443,6 @@ namespace Pro7ChordEditor
                 rtb.CaretPosition = range.End.GetInsertionPosition(LogicalDirection.Forward);
                 e.Handled = true;
             }
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -522,26 +508,20 @@ namespace Pro7ChordEditor
                                         customChordAttributes.Add(customChordAttribute);
                                         addLog("Added chord: " + customChordAttribute);
                                     }
-
                                 }
                                 else
                                 {
-                                       // Increment text counter....
+                                    // Increment text counter....
                                     charIndex += run.Text.Length;
                                 }
 
                                 addLog("charIndex=" + charIndex);
                                 addLog("currentChordFound: " + currentChordFound + " (" + rangeCurrentChord.Start + "-" + rangeCurrentChord.End + ")");
                                 addLog("lastChordFound: " + lastChordFound + " (" + rangeLastChord.Start + "-" + rangeLastChord.End + ")");
-
                             }
-
                         }
                     }
-
                 }
-
-
 
                 // Complete any current chord found when we reach end of text...
                 if (currentChordFound != "")
@@ -556,13 +536,12 @@ namespace Pro7ChordEditor
                     addLog("Added chord: " + customChordAttribute);
                 }
 
-
                 // Get slideElement (using our crude method of linking)
                 Rv.Data.Slide.Types.Element slideElement = (Rv.Data.Slide.Types.Element)richTextBox.Tag;
 
                 // Clear all existing chord attributes (in reverse order so removal does not affect the loop!)
                 addLog("Clearing existing chords");
-                for (int index = slideElement.Element_.Text.Attributes.CustomAttributes.Count-1; index >= 0; index--)
+                for (int index = slideElement.Element_.Text.Attributes.CustomAttributes.Count - 1; index >= 0; index--)
                 {
                     CustomAttribute customAttribute = slideElement.Element_.Text.Attributes.CustomAttributes[index];
                     addLog("Found existing customAttribute: " + customAttribute);
@@ -577,18 +556,16 @@ namespace Pro7ChordEditor
                 {
                     addLog("Adding: " + customAttribute1);
                 }
-                
+
                 // Add our modified chord attributes
                 if (customChordAttributes.Any())
                     slideElement.Element_.Text.Attributes.CustomAttributes.Add(customChordAttributes);
-
 
                 addLog("About to save custom attributes:");
                 foreach (var customAttribute2 in slideElement.Element_.Text.Attributes.CustomAttributes)
                 {
                     addLog("Saving: " + customAttribute2);
                 }
-
             }
 
             // Update Original and User MusicKeyScale (matching selected combo-box item to master list of all MUSICKEYSCALES
@@ -635,18 +612,17 @@ namespace Pro7ChordEditor
                 addLog("Closed");
             }
             MessageBox.Show(presentation.Name + "-Chords.pro saved.");
-
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             pro7Presentations = new List<Pro7Presentation>();
             Pro7Library selectedPro7Library = (Pro7Library)((ListView)sender).SelectedItem;
-            foreach (string presentationPath in Directory.EnumerateFiles(selectedPro7Library.Path,"*.pro"))
+            foreach (string presentationPath in Directory.EnumerateFiles(selectedPro7Library.Path, "*.pro"))
             {
                 pro7Presentations.Add(new Pro7Presentation { Name = System.IO.Path.GetFileName(presentationPath), Path = presentationPath });
             }
-           
+
             listPresentations.GetBindingExpression(ListView.ItemsSourceProperty).UpdateTarget();
         }
 
@@ -663,13 +639,11 @@ namespace Pro7ChordEditor
             Process[] processes = Process.GetProcessesByName("ProPresenter");
             if (processes.Length > 0)
                 MessageBox.Show(this, "You should not run this at same time as Pro7." + Environment.NewLine + "To avoid file corruptions, quit Pro7");
-         
-
 
             MessageBox.Show(this, "Make sure you have a good backup of your Pro7 library documents!");
         }
 
-        /*private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        /* private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             RichTextBox rtb = (RichTextBox)sender;
             if (tb1 != null)
@@ -688,7 +662,6 @@ namespace Pro7ChordEditor
                 }
             }
         } */
-
     }
 
     public class Pro7Library
@@ -697,11 +670,9 @@ namespace Pro7ChordEditor
         public string Path { get; set; }
     }
 
-
     public class Pro7Presentation
     {
         public string Name { get; set; }
         public string Path { get; set; }
     }
 }
-
