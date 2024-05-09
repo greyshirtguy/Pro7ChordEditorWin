@@ -27,8 +27,8 @@ However - feel free to take the [latest release](https://github.com/greyshirtguy
 - Probably make a new library for all presentations saved by this app (to keep them separated in a single folder)
 - Perhaps add backups?
 
-For safety it will NOT overwrite your existing files! Instead, when you save changes - it makes a copy of that file with a new name (-chord suffix added).
-*If you choose to edit the new copy with -chord suffix, saved changes will overwrite that file*
+For safety it will NOT overwrite your existing files! Instead, when you save changes - it makes a copy of that file with a new name (`... (Chords)` suffix added).
+*If you choose to edit the new copy with the `... (Chords)` suffix, saved changes will overwrite that file*
 
 Usual disclaimers apply - this is an *unsupported* 3rd party app - and it's very early in development - Use at your own risk!
 
