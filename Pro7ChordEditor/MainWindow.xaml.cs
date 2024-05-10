@@ -633,11 +633,17 @@ namespace Pro7ChordEditor
             if (selectedPro7Presentation != null)
             {
                 string presentationPath = selectedPro7Presentation.Path;
+                string presentationName = selectedPro7Presentation.Name;
+                string chordsVerPath = presentationPath.Substring(0, presentationPath.Length - 4) + " (Chords).pro";
                 // Check if there already is a Chords version of the presentation, if so, load that instead
-                if (File.Exists(presentationPath.Substring(0, presentationPath.Length - 4) + " (Chords).pro"))
+                if (File.Exists(chordsVerPath))
                 {
-                    presentationPath = presentationPath.Substring(0, presentationPath.Length - 4) + " (Chords).pro";
-                    selectedPro7Presentation = new Pro7Presentation { Name = System.IO.Path.GetFileName(presentationPath), Path = presentationPath };
+                    presentationPath = chordsVerPath;
+                    selectedPro7Presentation = new Pro7Presentation
+                    {
+                        Name = presentationName,
+                        Path = presentationPath,
+                    };
                 }
                 loadPresentation(presentationPath);
             }
