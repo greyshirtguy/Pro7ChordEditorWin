@@ -437,6 +437,11 @@ namespace Pro7ChordEditor
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (selectedPro7Presentation == null)
+            {
+                return;
+            }
+
             String lastChordFound = "";
             String currentChordFound = "";
             Rv.Data.IntRange rangeCurrentChord;
