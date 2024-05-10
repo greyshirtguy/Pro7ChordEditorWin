@@ -9,8 +9,8 @@
         Height="540"
         Width="1080"
         ResizeMode="CanMinimize"
-        Name="mainWindow"
-        Loaded="mainWindow_Loaded"
+        Name="MainWindow_Window"
+        Loaded="MainWindow_Loaded"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -23,12 +23,13 @@
                 <RowDefinition Height="300*" />
                 <RowDefinition Height="83*" />
             </Grid.RowDefinitions>
-            <ListView Grid.Row="0"
+            <ListView Name="ListLibraries"
+                      Grid.Row="0"
                       ItemsSource="{Binding Pro7Libraries}"
                       Background="Gray"
                       Foreground="White"
                       BorderBrush="Black"
-                      SelectionChanged="ListView_SelectionChanged">
+                      SelectionChanged="ListLibraries_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -39,13 +40,13 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <ListView Name="listPresentations"
+            <ListView Name="ListPresentations"
                       Grid.Row="1"
                       ItemsSource="{Binding Pro7Presentations}"
                       Background="Gray"
                       Foreground="White"
                       BorderBrush="Black"
-                      SelectionChanged="listPresentations_SelectionChanged">
+                      SelectionChanged="ListPresentations_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -71,7 +72,7 @@
                            Height="17"
                            Padding="0"
                            HorizontalContentAlignment="Right" />
-                    <ComboBox Name="cboOriginalKey"
+                    <ComboBox Name="ComboBoxOriginalKey"
                               Height="20"
                               Width="80"
                               HorizontalAlignment="Right" />
@@ -84,7 +85,7 @@
                            Height="17"
                            Padding="0"
                            HorizontalContentAlignment="Right" />
-                    <ComboBox Name="cboUserKey"
+                    <ComboBox Name="ComboBoxUserKey"
                               Height="20"
                               Width="80"
                               HorizontalAlignment="Right" />
@@ -92,11 +93,11 @@
                 <Button Grid.Row="2"
                         Margin="4"
                         Content="Save"
-                        Click="Button_Click" />
+                        Click="SaveButton_Click" />
             </Grid>
         </Grid>
         <ScrollViewer Margin="0,0,0,0" Grid.Column="1" Background="LightGray">
-            <StackPanel Name="stackPanel"></StackPanel>
+            <StackPanel Name="StackPanel"></StackPanel>
         </ScrollViewer>
     </Grid>
 </Window>
