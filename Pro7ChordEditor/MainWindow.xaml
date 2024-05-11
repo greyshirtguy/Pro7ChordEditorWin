@@ -12,10 +12,55 @@
         Name="MainWindow_Window"
         Loaded="MainWindow_Loaded"
         WindowStartupLocation="CenterScreen">
-    <Grid>
+    <Window.Resources>
+        <Color x:Key="ForegroundColor">#e6e6e6</Color>
+        <Color x:Key="BackgroundColor">#444444</Color>
+        <Color x:Key="BackgroundColor_Dark">#2f2f2f</Color>
+        <Color x:Key="BackgroundColor_UIElement">#6d6d6d</Color>
+        <Color x:Key="BackgroundColor_UIElement_Hover">#576f8a</Color>
+        <SolidColorBrush x:Key="ForegroundColorB"
+                         Color="{DynamicResource ForegroundColor}" />
+        <SolidColorBrush x:Key="BackgroundColorB"
+                         Color="{DynamicResource BackgroundColor}" />
+        <SolidColorBrush x:Key="BackgroundColorB_Dark"
+                         Color="{DynamicResource BackgroundColor_Dark}" />
+        <SolidColorBrush x:Key="BackgroundColorB_UIElement"
+                         Color="{DynamicResource BackgroundColor_UIElement}" />
+        <SolidColorBrush x:Key="BackgroundColorB_UIElement_Hover"
+                         Color="{DynamicResource BackgroundColor_UIElement_Hover}" />
+        <Style x:Key="ButtonStyle"
+               TargetType="{x:Type Button}">
+            <Setter Property="Background"
+                    Value="{DynamicResource BackgroundColorB_UIElement}" />
+            <Setter Property="Foreground"
+                    Value="{DynamicResource ForegroundColorB}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ButtonBase}">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderThickness="0" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="{DynamicResource BackgroundColorB_UIElement_Hover}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver"
+                         Value="True">
+                    <Setter Property="Background"
+                            Value="{DynamicResource BackgroundColorB_UIElement_Hover}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid Background="{DynamicResource BackgroundColorB}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="180" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
@@ -26,16 +71,18 @@
             <ListView Name="ListLibraries"
                       Grid.Row="0"
                       ItemsSource="{Binding Pro7Libraries}"
-                      Background="Gray"
-                      Foreground="White"
+                      Background="{DynamicResource BackgroundColorB}"
+                      Foreground="{DynamicResource ForegroundColorB}"
                       BorderBrush="Black"
                       SelectionChanged="ListLibraries_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="Pro7LibIcon.png"
-                                   Margin="0,0,5,0"/>
-                            <TextBlock Text="{Binding Name}" />
+                                   Margin="0,0,4,0"/>
+                            <TextBlock Text="{Binding Name}"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis" />
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -43,16 +90,18 @@
             <ListView Name="ListPresentations"
                       Grid.Row="1"
                       ItemsSource="{Binding Pro7Presentations}"
-                      Background="Gray"
-                      Foreground="White"
+                      Background="{DynamicResource BackgroundColorB_Dark}"
+                      Foreground="{DynamicResource ForegroundColorB}"
                       BorderBrush="Black"
                       SelectionChanged="ListPresentations_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="Pro7PresIcon.png"
-                                   Margin="0,0,5,0"/>
-                            <TextBlock Text="{Binding Name}" />
+                                   Margin="0,0,4,0"/>
+                            <TextBlock Text="{Binding Name}"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis" />
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -65,39 +114,43 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0"
                       VerticalAlignment="Center"
-                      Margin="4">
+                      Margin="6,4,4,4">
                     <Label Content="Original Key:"
+                           Foreground="{DynamicResource ForegroundColorB}"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
-                           Height="17"
-                           Padding="0"
-                           HorizontalContentAlignment="Right" />
+                           Height="16"
+                           Padding="0" />
                     <ComboBox Name="ComboBoxOriginalKey"
                               Height="20"
                               Width="80"
                               HorizontalAlignment="Right" />
                 </Grid>
                 <Grid Grid.Row="1"
-                      Margin="4">
+                      Margin="6,4,4,4">
                     <Label Content="User Key:"
+                           Foreground="{DynamicResource ForegroundColorB}"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
-                           Height="17"
-                           Padding="0"
-                           HorizontalContentAlignment="Right" />
+                           Height="16"
+                           Padding="0" />
                     <ComboBox Name="ComboBoxUserKey"
                               Height="20"
                               Width="80"
                               HorizontalAlignment="Right" />
                 </Grid>
                 <Button Grid.Row="2"
-                        Margin="4"
                         Content="Save"
+                        Style="{DynamicResource ButtonStyle}"
+                        Margin="4"
                         Click="SaveButton_Click" />
             </Grid>
         </Grid>
-        <ScrollViewer Margin="0,0,0,0" Grid.Column="1" Background="LightGray">
-            <StackPanel Name="StackPanel"></StackPanel>
+        <ScrollViewer Grid.Column="1"
+                      Margin="0"
+                      Background="#272727"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel Name="StackPanel" />
         </ScrollViewer>
     </Grid>
 </Window>
