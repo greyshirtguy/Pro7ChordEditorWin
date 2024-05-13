@@ -45,8 +45,8 @@ namespace Pro7ChordEditor
         public MainWindow()
         {
             InitializeComponent();
-            LogPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            MainWindow_Window.Title = MainWindow_Window.Title + " (" + Assembly.GetExecutingAssembly().GetName().Version + ")";
+            LogPath = Path.GetDirectoryName(typeof(App).Assembly.Location);
+            MainWindow_Window.Title = $"{MainWindow_Window.Title} ({typeof(App).Assembly.GetName().Version})";
             AddLog(MainWindow_Window.Title + " started");
 
             // Quick and rough way to build combobox list of all keys/scale without proper data binding/MVVM....
@@ -127,7 +127,7 @@ namespace Pro7ChordEditor
         private void AddLog(string logMessage)
         {
             if (!Directory.Exists(LogPath))
-                LogPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                LogPath = Path.GetDirectoryName(typeof(App).Assembly.Location);
 
             string logFileName = LogPath + @"\Pro7ChordEditor.log";
             try
